@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/fkuperma/MyBookSearch/static/css/main.073c9b0a.css",
-    "main.js": "/fkuperma/MyBookSearch/static/js/main.1c181ed3.js",
-    "static/js/787.1ac05e92.chunk.js": "/fkuperma/MyBookSearch/static/js/787.1ac05e92.chunk.js",
-    "static/media/logo.svg": "/fkuperma/MyBookSearch/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/fkuperma/MyBookSearch/index.html",
-    "main.073c9b0a.css.map": "/fkuperma/MyBookSearch/static/css/main.073c9b0a.css.map",
-    "main.1c181ed3.js.map": "/fkuperma/MyBookSearch/static/js/main.1c181ed3.js.map",
-    "787.1ac05e92.chunk.js.map": "/fkuperma/MyBookSearch/static/js/787.1ac05e92.chunk.js.map"
+    "main.css": "/MyBookSearch/static/css/main.073c9b0a.css",
+    "main.js": "/MyBookSearch/static/js/main.d7a9fb71.js",
+    "static/js/787.1ac05e92.chunk.js": "/MyBookSearch/static/js/787.1ac05e92.chunk.js",
+    "static/media/logo.svg": "/MyBookSearch/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/MyBookSearch/index.html",
+    "main.073c9b0a.css.map": "/MyBookSearch/static/css/main.073c9b0a.css.map",
+    "main.d7a9fb71.js.map": "/MyBookSearch/static/js/main.d7a9fb71.js.map",
+    "787.1ac05e92.chunk.js.map": "/MyBookSearch/static/js/787.1ac05e92.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.1c181ed3.js"
+    "static/js/main.d7a9fb71.js"
   ]
 }
