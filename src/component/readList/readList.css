@@ -1,0 +1,39 @@
+.full {
+  text-align: center;
+  background-size: cover;
+  /* background-image: url("../../background.jpg"); */
+  background-color: #cccccc;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.addButton {
+  display: inline-flex;
+  flex-direction: row;
+  margin-left: 10%;
+}
+h1 {
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.tasks {
+  border: 3px solid purple;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  text-align: left;
+}
+.box {
+  text-align: center;
+  align-content: center;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.deleteIcon {
+  margin-left: 50%;
+}
+.fab {
+  margin-left: 90%;
+}
