@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -6,7 +6,15 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import "./home.css";
 
 const quotes = [
@@ -80,16 +88,87 @@ const useStyles = makeStyles({
   cardContent: {
     flexGrow: 1,
   },
+  paper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 200,
+    height: 60,
+    border: "1px solid black",
+    cursor: "pointer",
+    fontWeight: "bold",
+    "&:hover": {
+      outline: "2px solid black",
+      backgroundColor: "black",
+      color: "white",
+    },
+  },
+  loginDialog: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  loginButton: {
+    marginTop: 10,
+  },
 });
+
+export const LoginPrompt = () => {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const handleLoginClick = () => {
+    setOpen(true);
+  };
+
+  const handleLoginClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Paper className={classes.paper} onClick={handleLoginClick}>
+        Log In
+      </Paper>
+      <Dialog open={open} onClose={handleLoginClose}>
+        <DialogTitle>Log In</DialogTitle>
+        <DialogContent className={classes.loginDialog}>
+          <TextField label="Username" />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.loginButton}
+          >
+            OK
+          </Button>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleLoginClose} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
 export const Home = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <br></br>
-      <br></br>
-
+      <br />
+      <br />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "100%",
+          height: "100px",
+        }}
+      >
+        <LoginPrompt />
+      </div>
       <Grid container spacing={3}>
         {quotes.map((quote, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
@@ -104,15 +183,13 @@ export const Home = () => {
                   {quote.quote}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  - {quote.author}
+                  {quote.author}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
-      <br></br>
-      <br></br>
     </div>
   );
 };
