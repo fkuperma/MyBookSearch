@@ -5,15 +5,15 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import HomeIcon from "@mui/icons-material/HomeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import bookIcon from "../../images/bookIcon.png";
+import backgroundImage from "../../images/background.png";
+import "./header.css";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -49,7 +49,15 @@ export function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "navy",
+        backgroundImage: `url(${backgroundImage})`,
+        className: "app-bar-image",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        height: 130,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        imageRendering: "auto",
       }}
     >
       <Container maxWidth="xl">
@@ -60,17 +68,53 @@ export function Header() {
             component="a"
             href="/"
             sx={{
+              className: "title",
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "revert",
-              fontWeight: 800,
+              fontSize: "45px !important",
+              //fontSize: "45px",
+              fontWeight: "bold",
               letterSpacing: ".3rem",
               color: "white",
+              textShadow:
+                "0 0 6px black, 0 0 6px black, 0 0 6px black, 0 0 6px black",
               textDecoration: "none",
             }}
           >
             MY BOOK SEARCH
           </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            {pages.map((page) => (
+              <Button
+                key={page.name}
+                onClick={() => handleCloseNavMenu(page)}
+                sx={{
+                  mx: 2,
+                  color: "white",
+                  textTransform: "uppercase",
+                  fontSize: "20px",
+                  textShadow:
+                    "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
+                  fontWeight: "bold",
+                  ":hover": {
+                    color: "black",
+                    textShadow:
+                      "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
+                  },
+                }}
+              >
+                {page.name}
+              </Button>
+            ))}
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -81,7 +125,18 @@ export function Header() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <Box sx={{ flexGrow: 1 }} />
+              <img
+                src={bookIcon}
+                alt="book icon"
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  textShadow:
+                    "0 0 6px black, 0 0 6px black, 0 0 6px black, 0 0 6px black",
+                  filter: "brightness(150%)",
+                }}
+              />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -106,7 +161,25 @@ export function Header() {
                   key={page.name}
                   onClick={() => handleCloseNavMenu(page)}
                 >
-                  <Typography textAlign="center">{page.name}</Typography>
+                  <Typography
+                    textAlign="center"
+                    sx={{
+                      mx: 2,
+                      color: "white",
+                      textTransform: "uppercase",
+                      fontSize: "15px",
+                      textShadow:
+                        "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
+                      fontWeight: "bold",
+                      ":hover": {
+                        color: "black",
+                        textShadow:
+                          "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
+                      },
+                    }}
+                  >
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -121,27 +194,18 @@ export function Header() {
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "cursive",
-              fontWeight: 700,
+              fontFamily: "revert",
+              fontWeight: "bold",
+              fontSize: "30px !important",
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "white",
+              textShadow:
+                "0 0 6px black, 0 0 6px black, 0 0 6px black, 0 0 6px black",
               textDecoration: "none",
             }}
           >
             MY BOOK SEARCH
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={() => handleCloseNavMenu(page)}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
         </Toolbar>
       </Container>
     </AppBar>

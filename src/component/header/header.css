@@ -1,0 +1,6 @@
+.app-bar-image {
+  image-rendering: crisp-edges;
+}
+.title {
+  font-size: 100rem !important;
+}
