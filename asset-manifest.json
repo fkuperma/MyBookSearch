@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/MyBookSearch/static/css/main.4dd9bb3b.css",
-    "main.js": "/MyBookSearch/static/js/main.a2c94154.js",
+    "main.css": "/MyBookSearch/static/css/main.614b68f6.css",
+    "main.js": "/MyBookSearch/static/js/main.a58e6de2.js",
     "static/js/787.1ac05e92.chunk.js": "/MyBookSearch/static/js/787.1ac05e92.chunk.js",
+    "static/media/background.png": "/MyBookSearch/static/media/background.57198c8cb2badd3aef64.png",
     "index.html": "/MyBookSearch/index.html",
-    "main.4dd9bb3b.css.map": "/MyBookSearch/static/css/main.4dd9bb3b.css.map",
-    "main.a2c94154.js.map": "/MyBookSearch/static/js/main.a2c94154.js.map",
+    "main.614b68f6.css.map": "/MyBookSearch/static/css/main.614b68f6.css.map",
+    "main.a58e6de2.js.map": "/MyBookSearch/static/js/main.a58e6de2.js.map",
     "787.1ac05e92.chunk.js.map": "/MyBookSearch/static/js/787.1ac05e92.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4dd9bb3b.css",
-    "static/js/main.a2c94154.js"
+    "static/css/main.614b68f6.css",
+    "static/js/main.a58e6de2.js"
   ]
 }
