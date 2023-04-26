@@ -1,12 +1,5 @@
 .full {
   text-align: center;
-  background-size: cover;
-  /* background-image: url("../../background.jpg"); */
-  background-color: #cccccc;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
 }
 
 .addButton {

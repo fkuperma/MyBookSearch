@@ -116,6 +116,7 @@ const useStyles = makeStyles({
 export const LoginPrompt = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  //   const history = useHistory();
 
   const handleLoginClick = () => {
     setOpen(true);
@@ -124,6 +125,9 @@ export const LoginPrompt = () => {
   const handleLoginClose = () => {
     setOpen(false);
   };
+  //   const handleOKClick = () => {
+  //     history.push("/readList");
+  //   };
 
   return (
     <div>
@@ -138,6 +142,7 @@ export const LoginPrompt = () => {
             variant="contained"
             color="primary"
             className={classes.loginButton}
+            // onClick={handleOKClick}
           >
             OK
           </Button>

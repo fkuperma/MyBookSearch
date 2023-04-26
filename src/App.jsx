@@ -9,6 +9,8 @@ import { Header } from "./component/header/header";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { ReadListContext } from "./state/readList/readList-context.jsx";
 import { readListReducer } from "./state/readList/readList.reducer.js";
+import { SearchProvider } from "./state/search/search-context.jsx";
+import { SimpleBottomNavigation } from "./component/footer/footer";
 
 function App() {
   const [readListState, readListDispatch] = useReducer(readListReducer, {
@@ -18,18 +20,21 @@ function App() {
   return (
     <HashRouter>
       <Header />
-      <ReadListContext.Provider value={{ readListState, readListDispatch }}>
-        <Routes>
-          {/* http://localhost:3000/#/ */}
-          <Route path="/" element={<Home />} />
-          {/* http://localhost:3000/#/readList */}
-          <Route path="/readList" element={<ReadList />} />
-          {/* http://localhost:3000/#/search */}
-          <Route path="/search" element={<Search />} />
-          {/* http://localhost:3000/#/review */}
-          <Route path="/review" element={<Review />} />
-        </Routes>
-      </ReadListContext.Provider>
+      <SearchProvider>
+        <ReadListContext.Provider value={{ readListState, readListDispatch }}>
+          <Routes>
+            {/* http://localhost:3000/#/ */}
+            <Route path="/" element={<Home />} />
+            {/* http://localhost:3000/#/readList */}
+            <Route path="/readList" element={<ReadList />} />
+            {/* http://localhost:3000/#/search */}
+            <Route path="/search" element={<Search />} />
+            {/* http://localhost:3000/#/review */}
+            <Route path="/review" element={<Review />} />
+          </Routes>
+        </ReadListContext.Provider>
+      </SearchProvider>
+      <SimpleBottomNavigation />
     </HashRouter>
   );
 }

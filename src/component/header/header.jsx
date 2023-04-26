@@ -98,16 +98,16 @@ export function Header() {
                 onClick={() => handleCloseNavMenu(page)}
                 sx={{
                   mx: 2,
-                  color: "white",
-                  textTransform: "uppercase",
-                  fontSize: "20px",
+                  color: "white !important",
+                  textTransform: "uppercase !important",
+                  fontSize: "20px !important",
                   textShadow:
-                    "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
-                  fontWeight: "bold",
+                    "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black !important",
+                  fontWeight: "bold !important",
                   ":hover": {
-                    color: "black",
+                    color: "black !important",
                     textShadow:
-                      "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
+                      "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white !important",
                   },
                 }}
               >
@@ -162,19 +162,19 @@ export function Header() {
                   onClick={() => handleCloseNavMenu(page)}
                 >
                   <Typography
-                    textAlign="center"
+                    textAlign="center !important"
                     sx={{
                       mx: 2,
-                      color: "white",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
+                      color: "white !important",
+                      textTransform: "uppercase !important",
+                      fontSize: "15px !important",
                       textShadow:
-                        "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
-                      fontWeight: "bold",
+                        "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black !important",
+                      fontWeight: "bold !important",
                       ":hover": {
-                        color: "black",
+                        color: "black !important",
                         textShadow:
-                          "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white",
+                          "0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white !important",
                       },
                     }}
                   >

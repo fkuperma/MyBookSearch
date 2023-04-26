@@ -9,8 +9,6 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { purple } from "@mui/material/colors";
-import Fab from "@mui/material/Fab";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { ReadListContext } from "../../state/readList/readList-context";
 import { ReadListActions } from "../../state/readList/readList.reducer";
 
@@ -107,30 +105,7 @@ export const ReadList = () => {
             {readList.title}
           </p>
         ))}
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
       </div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
     </div>
   );
 };
