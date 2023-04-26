@@ -14,8 +14,8 @@ import {
   DialogActions,
   TextField,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import "./home.css";
+import { useNavigate } from "react-router-dom";
 
 const quotes = [
   {
@@ -116,7 +116,7 @@ const useStyles = makeStyles({
 export const LoginPrompt = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  //   const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     setOpen(true);
@@ -125,9 +125,9 @@ export const LoginPrompt = () => {
   const handleLoginClose = () => {
     setOpen(false);
   };
-  //   const handleOKClick = () => {
-  //     history.push("/readList");
-  //   };
+  const handleOKClick = () => {
+    navigate("/readList");
+  };
 
   return (
     <div>
@@ -142,7 +142,7 @@ export const LoginPrompt = () => {
             variant="contained"
             color="primary"
             className={classes.loginButton}
-            // onClick={handleOKClick}
+            onClick={handleOKClick}
           >
             OK
           </Button>

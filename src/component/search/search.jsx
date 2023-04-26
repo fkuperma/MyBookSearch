@@ -22,6 +22,7 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { SearchContext } from "../../state/search/search-context.jsx";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {

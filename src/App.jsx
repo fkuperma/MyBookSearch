@@ -9,18 +9,24 @@ import { Header } from "./component/header/header";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { ReadListContext } from "./state/readList/readList-context.jsx";
 import { readListReducer } from "./state/readList/readList.reducer.js";
+import UserContext from "./state/user/user-context.jsx";
 import { SearchProvider } from "./state/search/search-context.jsx";
 import { SimpleBottomNavigation } from "./component/footer/footer";
+import { useState } from "react";
 
 function App() {
   const [readListState, readListDispatch] = useReducer(readListReducer, {
     readLists: [],
   });
+  const [username, setUsername] = useState("");
 
   return (
     <HashRouter>
       <Header />
       <SearchProvider>
+        <UserContext.Provider
+          value={{ username, setUsername }}
+        ></UserContext.Provider>
         <ReadListContext.Provider value={{ readListState, readListDispatch }}>
           <Routes>
             {/* http://localhost:3000/#/ */}
@@ -33,6 +39,9 @@ function App() {
             <Route path="/review" element={<Review />} />
           </Routes>
         </ReadListContext.Provider>
+        <UserContext.Provider
+          value={{ username, setUsername }}
+        ></UserContext.Provider>
       </SearchProvider>
       <SimpleBottomNavigation />
     </HashRouter>
