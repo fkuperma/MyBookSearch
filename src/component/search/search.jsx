@@ -66,6 +66,7 @@ export const Search = () => {
   const [state, dispatch] = useContext(SearchContext);
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputDisabled, setInputDisabled] = useState(true);
+  const navigate = useNavigate();
 
   async function getSearchResults(searchType, searchTerm) {
     const response = await fetch(
@@ -95,6 +96,12 @@ export const Search = () => {
     setSearchTerm("");
     setSearchType(event.target.value);
   };
+
+  const handleReviewClick = (book) => {
+    dispatch({ type: "SET_BOOK", payload: book });
+    navigate("/review");
+  };
+
   useEffect(() => {
     localStorage.setItem("clickedSearch", clickedSearch);
   }, [clickedSearch]);
@@ -102,9 +109,13 @@ export const Search = () => {
   return (
     <div>
       <Typography variant="h4">Book Search</Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <FormControl variant="outlined" className={classes.formControl}>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={6} sm={6} md={4} lg={3}>
+          <FormControl
+            style={{ width: "170px" }}
+            variant="outlined"
+            className={classes.formControl}
+          >
             <InputLabel id="search-type-label">Search By</InputLabel>
             <Select
               labelId="search-type-label"
@@ -121,19 +132,20 @@ export const Search = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Grid item xs={5} sm={6} md={4} lg={3}>
           <TextField
             id="search-term"
-            label={searchTerm ? "Search Term" : "Choose an option to search by"}
-            variant="outlined"
+            label={searchTerm ? "Search Term" : "Choose option to search"}
+            variant="standard"
             value={searchTerm}
             placeholder={searchTerm ? "Enter search term" : "Search Term"}
             disabled={inputDisabled}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
+            style={{ width: "100%" }}
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={2} lg={1}>
+        <Grid item xs={1}>
           <Button variant="contained" color="primary" onClick={handleSearch}>
             Search
           </Button>
@@ -157,13 +169,10 @@ export const Search = () => {
       <Grid container spacing={3}>
         {searchResults.map((book) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card
-              key={book.id}
-              className={classes.root}
-              onClick={() => window.open(book.volumeInfo.previewLink)}
-            >
+            <Card key={book.id} className={classes.root}>
               <CardActionArea>
                 <CardMedia
+                  onClick={() => window.open(book.volumeInfo.previewLink)}
                   className={classes.media}
                   image={book.volumeInfo?.imageLinks?.thumbnail || ""}
                   title={book.volumeInfo?.title || ""}
@@ -195,6 +204,7 @@ export const Search = () => {
                 <div />
                 <div className={classes.iconsContainer}>
                   <IconButton
+                    onClick={() => handleReviewClick(book)}
                     size="small"
                     sx={{
                       color: "black",

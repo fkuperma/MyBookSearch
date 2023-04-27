@@ -15,7 +15,7 @@ export function SimpleBottomNavigation() {
       sx={{
         width: "100%",
         marginTop: "30px",
-        backgroundImage: `url(${backgroundImage})`,
+        // backgroundImage: `url(${backgroundImage})`,
         className: "app-bar-image",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
