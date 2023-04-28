@@ -11,10 +11,12 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { purple } from "@mui/material/colors";
 import { ReadListContext } from "../../state/readList/readList-context";
 import { ReadListActions } from "../../state/readList/readList.reducer";
+import Typography from "@material-ui/core/Typography";
 
 export const ReadList = () => {
   const [input, setInput] = useState("");
   const { readListState, readListDispatch } = useContext(ReadListContext);
+  const username = localStorage.getItem("username");
 
   const onInput = (event) => {
     console.log(event.target.value);
@@ -44,7 +46,10 @@ export const ReadList = () => {
   return (
     <div className="full">
       <br></br>
-      <h1>MY READ LIST </h1>
+      <Typography style={{ textTransform: "uppercase" }}>
+        {username}'s READ LIST
+      </Typography>
+
       <div className="box">
         <Box
           component="form"

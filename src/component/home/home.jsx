@@ -117,6 +117,7 @@ export const LoginPrompt = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
   const handleLoginClick = () => {
     setOpen(true);
@@ -125,9 +126,15 @@ export const LoginPrompt = () => {
   const handleLoginClose = () => {
     setOpen(false);
   };
+
   const handleOKClick = () => {
+    localStorage.setItem("username", username);
     navigate("/readList");
   };
+
+  function handleUsernameChange(event) {
+    setUsername(event.target.value);
+  }
 
   return (
     <div>
@@ -137,7 +144,11 @@ export const LoginPrompt = () => {
       <Dialog open={open} onClose={handleLoginClose}>
         <DialogTitle>Log In</DialogTitle>
         <DialogContent className={classes.loginDialog}>
-          <TextField label="Username" />
+          <TextField
+            label="Username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
           <Button
             variant="contained"
             color="primary"

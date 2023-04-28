@@ -98,8 +98,16 @@ export const Search = () => {
   };
 
   const handleReviewClick = (book) => {
-    dispatch({ type: "SET_BOOK", payload: book });
+    // dispatch({ type: "SET_BOOK", payload: book });
     navigate("/review");
+  };
+
+  const addToReadList = () => {
+    // readListDispatch({
+    //   type: readListActions.ADD,
+    //   todo: { title: input, isComplete: false },
+    // });
+    // setInput("");
   };
 
   useEffect(() => {
@@ -108,13 +116,13 @@ export const Search = () => {
 
   return (
     <div>
-      <Typography variant="h4">Book Search</Typography>
-      <Grid container spacing={1} alignItems="center">
+      {/* <Typography variant="h4">Book Search</Typography> */}
+      <Grid container spacing={1} justify="center" alignItems="center">
         <Grid item xs={6} sm={6} md={4} lg={3}>
           <FormControl
-            style={{ width: "170px" }}
             variant="outlined"
             className={classes.formControl}
+            style={{ width: "100%" }}
           >
             <InputLabel id="search-type-label">Search By</InputLabel>
             <Select
@@ -142,7 +150,7 @@ export const Search = () => {
             disabled={inputDisabled}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
-            style={{ width: "100%" }}
+            fullWidth
           />
         </Grid>
         <Grid item xs={1}>
@@ -204,7 +212,7 @@ export const Search = () => {
                 <div />
                 <div className={classes.iconsContainer}>
                   <IconButton
-                    onClick={() => handleReviewClick(book)}
+                    onClick={handleReviewClick}
                     size="small"
                     sx={{
                       color: "black",
@@ -213,6 +221,7 @@ export const Search = () => {
                     <RateReviewIcon />
                   </IconButton>
                   <IconButton
+                    onClick={addToReadList}
                     size="small"
                     sx={{
                       color: "black",
