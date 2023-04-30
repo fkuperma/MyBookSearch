@@ -23,6 +23,8 @@ import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { SearchContext } from "../../state/search/search-context.jsx";
 import { useNavigate } from "react-router-dom";
+import { Review } from "../review/review";
+import { ReadList } from "../readList/readList";
 
 const useStyles = makeStyles({
   root: {
@@ -67,6 +69,7 @@ export const Search = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [inputDisabled, setInputDisabled] = useState(true);
   const navigate = useNavigate();
+  const [selectedBook, setSelectedBook] = useState(null);
 
   async function getSearchResults(searchType, searchTerm) {
     const response = await fetch(
@@ -98,16 +101,13 @@ export const Search = () => {
   };
 
   const handleReviewClick = (book) => {
-    // dispatch({ type: "SET_BOOK", payload: book });
-    navigate("/review");
+    setSelectedBook(book);
+    navigate("/review", { state: { book } });
   };
 
-  const addToReadList = () => {
-    // readListDispatch({
-    //   type: readListActions.ADD,
-    //   todo: { title: input, isComplete: false },
-    // });
-    // setInput("");
+  const handleReadClick = (book) => {
+    setSelectedBook(book);
+    navigate("/readList", { state: { book } });
   };
 
   useEffect(() => {
@@ -212,20 +212,20 @@ export const Search = () => {
                 <div />
                 <div className={classes.iconsContainer}>
                   <IconButton
-                    onClick={handleReviewClick}
                     size="small"
                     sx={{
                       color: "black",
                     }}
+                    onClick={() => handleReviewClick(book)}
                   >
                     <RateReviewIcon />
                   </IconButton>
                   <IconButton
-                    onClick={addToReadList}
                     size="small"
                     sx={{
                       color: "black",
                     }}
+                    onClick={() => handleReadClick(book)}
                   >
                     <FavoriteIcon />
                   </IconButton>
