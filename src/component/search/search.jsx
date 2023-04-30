@@ -49,6 +49,20 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
+  formControl: {
+    minWidth: "100%",
+  },
+  inputRoot: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: "4px",
+    border: "1px solid #000000",
+  },
+  inputFocused: {
+    border: "1px solid #000000",
+  },
+  notchedOutline: {
+    border: "none",
+  },
 });
 
 const searchOptions = [
@@ -117,66 +131,100 @@ export const Search = () => {
   return (
     <div>
       {/* <Typography variant="h4">Book Search</Typography> */}
-      <Grid container spacing={1} justify="center" alignItems="center">
-        <Grid item xs={6} sm={6} md={4} lg={3}>
-          <FormControl
-            variant="outlined"
-            className={classes.formControl}
-            style={{ width: "100%" }}
-          >
-            <InputLabel id="search-type-label">Search By</InputLabel>
-            <Select
-              labelId="search-type-label"
-              id="search-type"
-              value={searchType}
-              onChange={handleSearchOptionChange}
-              label="Search By"
+      <div>
+        <br />
+        <br />
+        <Grid container spacing={2} justify="center" alignItems="center">
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <FormControl
+              variant="outlined"
+              className={classes.formControl}
+              fullWidth
             >
-              {searchOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <InputLabel id="search-type-label">Search By</InputLabel>
+              <Select
+                labelId="search-type-label"
+                id="search-type"
+                value={searchType}
+                onChange={handleSearchOptionChange}
+                label="Search By"
+                classes={{
+                  root: classes.inputRoot,
+                  focused: classes.inputFocused,
+                }}
+              >
+                {searchOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+              id="search-term"
+              label={searchTerm ? "Search Term" : "Choose option to search"}
+              variant="outlined"
+              value={searchTerm}
+              placeholder={searchTerm ? "Enter search term" : "Search Term"}
+              disabled={inputDisabled}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
+              fullWidth
+              InputProps={{
+                classes: {
+                  root: classes.inputRoot,
+                  focused: classes.inputFocused,
+                  notchedOutline: classes.notchedOutline,
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Button
+              variant="contained"
+              color="black"
+              size="large"
+              disableElevation
+              onClick={handleSearch}
+              style={{ height: "55px" }}
+              fullWidth
+              classes={{
+                root: classes.inputRoot,
+                focused: classes.inputFocused,
+              }}
+            >
+              Search
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={5} sm={6} md={4} lg={3}>
-          <TextField
-            id="search-term"
-            label={searchTerm ? "Search Term" : "Choose option to search"}
-            variant="standard"
-            value={searchTerm}
-            placeholder={searchTerm ? "Enter search term" : "Search Term"}
-            disabled={inputDisabled}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
-            Search
-          </Button>
-        </Grid>
-      </Grid>
 
-      {clickedSearch &&
-      searchResults.length === 0 &&
-      searchTerm.trim() !== "" ? (
-        <Typography variant="body1" color="error">
-          No results found. Please try another search term.
-        </Typography>
-      ) : (
-        searchTerm.trim() === "" && (
+        {clickedSearch &&
+        searchResults.length === 0 &&
+        searchTerm.trim() !== "" ? (
           <Typography variant="body1" color="error">
-            Please enter a search term to find books.
+            No results found. Please try another search term.
           </Typography>
-        )
-      )}
-
+        ) : searchTerm.trim() === "" ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "80vh",
+            }}
+          >
+            <Typography variant="h4">
+              Please enter a Search Term to find books
+            </Typography>
+          </div>
+        ) : null}
+      </div>
       <Grid container spacing={3}>
         {searchResults.map((book) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
+            <br></br>
             <Card key={book.id} className={classes.root}>
               <CardActionArea>
                 <CardMedia
@@ -212,18 +260,26 @@ export const Search = () => {
                 <div />
                 <div className={classes.iconsContainer}>
                   <IconButton
-                    size="small"
+                    size="medium"
                     sx={{
                       color: "black",
+                      marginRight: "5px",
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                     }}
                     onClick={() => handleReviewClick(book)}
                   >
                     <RateReviewIcon />
                   </IconButton>
                   <IconButton
-                    size="small"
+                    size="medium"
                     sx={{
                       color: "black",
+                      margin: "0 8px",
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                     }}
                     onClick={() => handleReadClick(book)}
                   >
