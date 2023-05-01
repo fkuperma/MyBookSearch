@@ -52,16 +52,48 @@ const useStyles = makeStyles({
   formControl: {
     minWidth: "100%",
   },
-  inputRoot: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "4px",
-    border: "1px solid #000000",
+  search: {
+    backgroundColor: "white",
+    border: "1px solid black",
+    cursor: "pointer",
+    fontWeight: "bold",
+    "&:hover": {
+      outline: "2px solid black",
+      backgroundColor: "black",
+      color: "white",
+    },
   },
-  inputFocused: {
-    border: "1px solid #000000",
+  formControl: {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "black",
+      },
+      "&:hover fieldset": {
+        borderColor: "black",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "black",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: "black",
+    },
   },
-  notchedOutline: {
-    border: "none",
+  textField: {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "black",
+      },
+      "&:hover fieldset": {
+        borderColor: "black",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "black",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: "black",
+    },
   },
 });
 
@@ -71,7 +103,7 @@ const searchOptions = [
   { label: "Category", value: "subject" },
 ];
 
-export const Search = () => {
+export const Search = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [clickedSearch, setClickedSearch] = useState(
@@ -143,15 +175,12 @@ export const Search = () => {
             >
               <InputLabel id="search-type-label">Search By</InputLabel>
               <Select
+                color="pink"
                 labelId="search-type-label"
                 id="search-type"
                 value={searchType}
                 onChange={handleSearchOptionChange}
                 label="Search By"
-                classes={{
-                  root: classes.inputRoot,
-                  focused: classes.inputFocused,
-                }}
               >
                 {searchOptions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -172,28 +201,18 @@ export const Search = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={handleKeyPress}
               fullWidth
-              InputProps={{
-                classes: {
-                  root: classes.inputRoot,
-                  focused: classes.inputFocused,
-                  notchedOutline: classes.notchedOutline,
-                },
-              }}
+              className={classes.textField}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Button
+              className={classes.search}
               variant="contained"
-              color="black"
               size="large"
               disableElevation
               onClick={handleSearch}
               style={{ height: "55px" }}
               fullWidth
-              classes={{
-                root: classes.inputRoot,
-                focused: classes.inputFocused,
-              }}
             >
               Search
             </Button>
