@@ -117,6 +117,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { ReadListContext } from "../../state/readList/readList-context";
+import { StoreContext } from "../../state/readList/store";
 import {
   Typography,
   Card,
@@ -131,6 +132,7 @@ import {
 export const ReadList = () => {
   const location = useLocation();
   const book = location.state?.book;
+  const { state, dispatch } = useContext(StoreContext);
 
   const [readText, setReadText] = useState("");
   const [readLists, setReadList] = useState([]);
@@ -140,9 +142,12 @@ export const ReadList = () => {
   useEffect(() => {
     const storedReadLists = localStorage.getItem("readList");
     if (storedReadLists) {
-      setReadList(JSON.parse(storedReadLists));
+      dispatch({
+        type: "ADD_TO_READ_LIST",
+        payload: JSON.parse(storedReadLists),
+      });
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem("readList", JSON.stringify(readLists));
@@ -151,7 +156,7 @@ export const ReadList = () => {
   const handleReadListsSubmit = (event) => {
     event.preventDefault();
     if (readText.trim() !== "") {
-      setReadList([...readLists, readText]);
+      dispatch({ type: "ADD_TO_READ_LIST", payload: readText });
       setReadText("");
     }
   };
@@ -164,31 +169,51 @@ export const ReadList = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "80vh",
+          flexDirection: "column",
         }}
       >
-        <Typography style={{ textTransform: "uppercase" }}>
-          {username}'s READ LIST
+        <Typography
+          style={{
+            textTransform: "uppercase",
+            fontSize: "48px",
+            textAlign: "center",
+          }}
+        >
+          {username ? `${username}'s READ LIST` : "READ LIST"}
         </Typography>
-        <br></br>
-        <br></br>
-        <Typography variant="h4">
-          Choose a book to add to your read list
-        </Typography>
+
+        {!book && (
+          <>
+            <Typography variant="h4" style={{ textAlign: "center" }}>
+              Choose a book to add to your read list
+            </Typography>
+          </>
+        )}
       </div>
     );
   }
 
   return (
     <div>
-      <Typography style={{ textTransform: "uppercase" }}>
-        {username}'s READ LIST
+      <Typography
+        style={{
+          textTransform: "uppercase",
+          fontSize: "48px",
+          textAlign: "center",
+        }}
+      >
+        {username ? `${username}'s READ LIST` : "READ LIST"}
       </Typography>
 
       <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 10 }}>
         <CardMedia
           component="img"
           height="400"
-          image={book.volumeInfo.imageLinks.thumbnail}
+          image={
+            book.volumeInfo.imageLinks
+              ? book.volumeInfo.imageLinks.thumbnail
+              : ""
+          }
           alt={book.volumeInfo.title}
         />
         <CardContent>
@@ -205,19 +230,7 @@ export const ReadList = () => {
           </Typography>
         </CardContent>
       </Card>
-      {/* <form onSubmit={handleReadListsSubmit}>
-        <TextField
-          label="Write your review here..."
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={readText}
-          onChange={(event) => setReadText(event.target.value)}
-        />
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
-      </form> */}
+
       <List>
         {readLists.map((readList, index) => (
           <ListItem key={index}>

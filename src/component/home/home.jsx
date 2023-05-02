@@ -113,7 +113,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const LoginPrompt = () => {
+export const LoginPrompt = ({ onLogout }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -131,6 +131,10 @@ export const LoginPrompt = () => {
     localStorage.setItem("username", username);
     navigate("/readList");
   };
+  const handleLogoutClick = () => {
+    localStorage.removeItem("username");
+    onLogout();
+  };
 
   function handleUsernameChange(event) {
     setUsername(event.target.value);
@@ -138,9 +142,16 @@ export const LoginPrompt = () => {
 
   return (
     <div>
-      <Paper className={classes.paper} onClick={handleLoginClick}>
-        Log In
-      </Paper>
+      {localStorage.getItem("username") ? (
+        <Paper className={classes.paper} onClick={handleLogoutClick}>
+          {/* Log Out ({localStorage.getItem("username")}) */}
+          Log Out
+        </Paper>
+      ) : (
+        <Paper className={classes.paper} onClick={handleLoginClick}>
+          Log In
+        </Paper>
+      )}
       <Dialog open={open} onClose={handleLoginClose}>
         <DialogTitle>Log In</DialogTitle>
         <DialogContent className={classes.loginDialog}>
@@ -170,6 +181,12 @@ export const LoginPrompt = () => {
 
 export const Home = () => {
   const classes = useStyles();
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("username")
+  );
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -183,7 +200,7 @@ export const Home = () => {
           height: "100px",
         }}
       >
-        <LoginPrompt />
+        <LoginPrompt onLogout={handleLogout} />
       </div>
       <Grid container spacing={3}>
         {quotes.map((quote, index) => (
