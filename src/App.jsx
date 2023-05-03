@@ -13,12 +13,15 @@ import UserContext from "./state/user/user-context.jsx";
 import { SearchProvider } from "./state/search/search-context.jsx";
 import { SimpleBottomNavigation } from "./component/footer/footer";
 import { useState } from "react";
+import MyContext from "./state/MyContext";
 
 function App() {
   const [readListState, readListDispatch] = useReducer(readListReducer, {
     readLists: [],
   });
   const [username, setUsername] = useState("");
+  const [state, dispatch] = useReducer();
+  const [data, setData] = useState({});
 
   return (
     <HashRouter>
@@ -28,16 +31,18 @@ function App() {
           value={{ username, setUsername }}
         ></UserContext.Provider>
         <ReadListContext.Provider value={{ readListState, readListDispatch }}>
-          <Routes>
-            {/* http://localhost:3000/#/ */}
-            <Route path="/" element={<Home />} />
-            {/* http://localhost:3000/#/readList */}
-            <Route path="/readList" element={<ReadList />} />
-            {/* http://localhost:3000/#/search */}
-            <Route path="/search" element={<Search />} />
-            {/* http://localhost:3000/#/review */}
-            <Route path="/review" element={<Review />} />
-          </Routes>
+          <MyContext.Provider value={{ data, setData }}>
+            <Routes>
+              {/* http://localhost:3000/#/ */}
+              <Route path="/" element={<Home />} />
+              {/* http://localhost:3000/#/readList */}
+              <Route path="/readList" element={<ReadList />} />
+              {/* http://localhost:3000/#/search */}
+              <Route path="/search" element={<Search />} />
+              {/* http://localhost:3000/#/review */}
+              <Route path="/review" element={<Review />} />
+            </Routes>
+          </MyContext.Provider>
         </ReadListContext.Provider>
         <UserContext.Provider
           value={{ username, setUsername }}

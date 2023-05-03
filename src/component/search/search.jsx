@@ -104,16 +104,24 @@ const searchOptions = [
 ];
 
 export const Search = (props) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem("searchTerm") || ""
+  );
+  const [searchResults, setSearchResults] = useState(
+    JSON.parse(localStorage.getItem("searchResults")) || []
+  );
   const [clickedSearch, setClickedSearch] = useState(
     localStorage.getItem("clickedSearch") === "true"
   );
-  const [searchType, setSearchType] = React.useState(searchOptions[0].value);
+  const [searchType, setSearchType] = React.useState(
+    localStorage.getItem("searchType") || searchOptions[0].value
+  );
   const classes = useStyles();
   const [state, dispatch] = useContext(SearchContext);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [inputDisabled, setInputDisabled] = useState(true);
+  const [selectedOption, setSelectedOption] = useState(
+    localStorage.getItem("selectedOption") || null
+  );
+  const [inputDisabled, setInputDisabled] = useState(searchType === "");
   const navigate = useNavigate();
   const [selectedBook, setSelectedBook] = useState(null);
 
@@ -139,11 +147,13 @@ export const Search = (props) => {
     }
   };
   const handleSearchOptionChange = (event) => {
+    const value = event.target.value;
     setInputDisabled(false);
     setSearchResults([]);
     setClickedSearch(false);
     setSearchTerm("");
-    setSearchType(event.target.value);
+    setSearchType(value);
+    setSelectedOption(value);
   };
 
   const handleReviewClick = (book) => {
@@ -158,7 +168,25 @@ export const Search = (props) => {
 
   useEffect(() => {
     localStorage.setItem("clickedSearch", clickedSearch);
-  }, [clickedSearch]);
+    localStorage.setItem("searchResults", JSON.stringify(searchResults));
+    localStorage.setItem("searchTerm", searchTerm);
+    localStorage.setItem("searchType", searchType);
+    localStorage.setItem("selectedOption", selectedOption);
+  }, [clickedSearch, searchResults, searchTerm, searchType, selectedOption]);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const handleBeforeUnload = () => {
+    localStorage.removeItem("clickedSearch");
+    localStorage.removeItem("searchResults");
+    localStorage.removeItem("searchTerm");
+    localStorage.removeItem("searchType");
+  };
 
   return (
     <div>
