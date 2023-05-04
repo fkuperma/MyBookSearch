@@ -26,6 +26,8 @@ export function SimpleBottomNavigation() {
         imageRendering: "auto",
         backgroundColor: "black",
         color: "white",
+        posiiton: "fixed",
+        bottom: 0,
       }}
     >
       <BottomNavigation

@@ -96,8 +96,9 @@ export const ReadList = () => {
   );
 
   return (
-    <div>
+    <div className="container">
       <br />
+
       <Typography
         style={{
           textTransform: "uppercase",
@@ -269,7 +270,14 @@ export const ReadList = () => {
                             },
                           }}
                         />
-                        <ListItemText primary={title} />
+                        <ListItemText
+                          primary={title}
+                          style={{
+                            fontSize: "25px",
+                            fontFamily: "Arial",
+                            textTransform: "uppercase",
+                          }}
+                        />
                       </Box>
                       <Box sx={{ display: "flex" }}>
                         <Button

@@ -193,7 +193,7 @@ export const Search = (props) => {
   };
 
   return (
-    <div>
+    <div className="container">
       {/* <Typography variant="h4">Book Search</Typography> */}
       <div>
         <br />

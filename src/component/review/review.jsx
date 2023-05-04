@@ -62,7 +62,7 @@ export const Review = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Box
         sx={{
           border: "2px solid black",
