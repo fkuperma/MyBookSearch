@@ -7,11 +7,12 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { purple } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import GridOnIcon from "@mui/icons-material/GridOn";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import { ReadListActions } from "../../state/readList/readList.reducer";
 
@@ -168,13 +169,13 @@ export const ReadList = () => {
               </IconButton>
             </div>
           </div>
+          <br></br>
 
           {isGridView ? (
             <Grid container spacing={3}>
               {readList.map((title, index) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={title.title}>
                   <Card>
-                    <br></br>
                     <CardActionArea>
                       <CardMedia
                         component="img"
@@ -230,55 +231,80 @@ export const ReadList = () => {
               ))}
             </Grid>
           ) : (
-            <List>
-              {readList.map((title, index) => (
-                <ListItem
-                  key={title.title}
-                  index={index}
-                  deleteReadList={() => deleteReadList(title)}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox
-                      {...label}
-                      icon={<CheckCircleOutlineIcon />}
-                      checkedIcon={<CheckCircleIcon />}
-                      checked={title.isComplete}
-                      onChange={() => toggleChecked(title)}
-                      sx={{
-                        color: purple[800],
-                        "&.Mui-checked": {
-                          color: purple[600],
-                        },
-                      }}
-                    />
-                    <IconButton
-                      onClick={() => deleteReadList(index)}
-                      edge="start"
-                      color="secondary"
+            <Box
+              sx={{
+                border: "2px solid black",
+                borderRadius: "7px",
+                width: "70%",
+                margin: "0 auto",
+              }}
+            >
+              <List>
+                {readList.map((title, index) => (
+                  <Box
+                    key={title.title}
+                    sx={{
+                      borderBottom:
+                        index === readList.length - 1
+                          ? "none"
+                          : "1px solid black",
+                    }}
+                  >
+                    <ListItem
+                      index={index}
+                      deleteReadList={() => deleteReadList(title)}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <DeleteOutlineIcon />
-                    </IconButton>
-                    <ListItemText primary={title} />
-                    {/* <ListItemText primary={`Book title: ${title}`} /> */}
-                    <Button
-                      size="small"
-                      color="primary"
-                      sx={{
-                        color: "black",
-                        outline: "1px solid black",
-                        margin: "0 8px",
-                        backgroundColor: "white",
-                        borderRadius: "10%",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                      }}
-                      // onClick={() => window.open(book.volumeInfo.previewLink)}
-                    >
-                      Read
-                    </Button>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Checkbox
+                          {...label}
+                          icon={<CheckBoxOutlineBlankIcon />}
+                          checkedIcon={<CheckBoxIcon />}
+                          checked={title.isComplete}
+                          onChange={() => toggleChecked(title)}
+                          sx={{
+                            color: grey[800],
+                            "&.Mui-checked": {
+                              color: grey[600],
+                            },
+                          }}
+                        />
+                        <ListItemText primary={title} />
+                      </Box>
+                      <Box sx={{ display: "flex" }}>
+                        <Button
+                          size="small"
+                          color="primary"
+                          sx={{
+                            color: "black",
+                            outline: "1px solid black",
+                            backgroundColor: "white",
+                            borderRadius: "10%",
+                            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                            marginRight: "15px",
+                          }}
+                          // onClick={() => window.open(book.volumeInfo.previewLink)}
+                        >
+                          Read
+                        </Button>
+                        <IconButton
+                          onClick={() => deleteReadList(index)}
+                          edge="start"
+                          sx={{
+                            color: grey[800],
+                            "&.Mui-checked": {
+                              color: grey[600],
+                            },
+                          }}
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </Box>
+                    </ListItem>
                   </Box>
-                </ListItem>
-              ))}
-            </List>
+                ))}
+              </List>
+            </Box>
           )}
         </>
       ) : (
