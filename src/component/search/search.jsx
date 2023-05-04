@@ -25,6 +25,7 @@ import { SearchContext } from "../../state/search/search-context.jsx";
 import { useNavigate } from "react-router-dom";
 import { Review } from "../review/review";
 import { ReadList } from "../readList/readList";
+import "./search.css";
 
 const useStyles = makeStyles({
   root: {
@@ -249,7 +250,8 @@ export const Search = (props) => {
             </Button>
           </Grid>
         </Grid>
-
+        <br></br>
+        <hr className="underline"></hr>
         {clickedSearch &&
         searchResults.length === 0 &&
         searchTerm.trim() !== "" ? (

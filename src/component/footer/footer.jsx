@@ -6,6 +6,7 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import backgroundImage from "../../images/background.png";
+import { Typography } from "@mui/material";
 
 export function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
@@ -15,15 +16,16 @@ export function SimpleBottomNavigation() {
       sx={{
         width: "100%",
         marginTop: "30px",
-        backgroundImage: `url(${backgroundImage})`,
         className: "app-bar-image",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
-        height: 50,
+        height: 35,
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         imageRendering: "auto",
+        backgroundColor: "black",
+        color: "white",
       }}
     >
       <BottomNavigation
@@ -33,6 +35,7 @@ export function SimpleBottomNavigation() {
           setValue(newValue);
         }}
       ></BottomNavigation>
+      <Typography sx={{ marginRight: "20px", padding: "15px" }}>FK</Typography>
     </Box>
   );
 }
