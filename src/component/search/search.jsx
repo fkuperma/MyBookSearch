@@ -165,7 +165,7 @@ export const Search = (props) => {
   const handleReadClick = (book) => {
     setSelectedBook(book);
     const readList = JSON.parse(localStorage.getItem("readList")) || [];
-    readList.push(book.volumeInfo.title);
+    readList.push(book);
     localStorage.setItem("readList", JSON.stringify(readList));
     navigate("/readList");
   };

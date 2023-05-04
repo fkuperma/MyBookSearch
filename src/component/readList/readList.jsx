@@ -40,6 +40,8 @@ export const ReadList = () => {
   const [readList, setReadList] = useState([]);
   const username = localStorage.getItem("username");
   const [isGridView, setIsGridView] = useState(false);
+  const [isListToggleOn, setIsListToggleOn] = useState(false);
+  const [isGridToggleOn, setIsGridToggleOn] = useState(false);
 
   useEffect(() => {
     const list = JSON.parse(localStorage.getItem("readList")) || [];
@@ -48,6 +50,16 @@ export const ReadList = () => {
       localStorage.removeItem("readList");
     };
     window.addEventListener("beforeunload", clearReadList);
+
+    const isListToggleOn = localStorage.getItem("isListToggleOn");
+    if (isListToggleOn !== null) {
+      setIsListToggleOn(isListToggleOn === "true");
+    }
+
+    const isGridToggleOn = localStorage.getItem("isGridToggleOn");
+    if (isGridToggleOn !== null) {
+      setIsGridToggleOn(isGridToggleOn === "true");
+    }
 
     return () => {
       window.removeEventListener("beforeunload", clearReadList);
@@ -72,18 +84,29 @@ export const ReadList = () => {
   //   setInput("");
   // };
 
-  const deleteReadList = (title) => {
-    readListDispatch({
-      type: ReadListActions.DELETE,
-      title,
-    });
+  const deleteReadList = (id) => {
+    const updatedReadList = readList.filter((book) => book.id !== id);
+    localStorage.setItem("readList", JSON.stringify(updatedReadList));
+    setReadList(updatedReadList);
   };
 
-  const toggleChecked = (title) => {
-    readListDispatch({
-      type: ReadListActions.TOGGLE,
-      title,
+  const toggleChecked = (id) => {
+    const updatedReadList = readList.map((book) => {
+      if (book.id === id) {
+        book.isComplete = !book.isComplete;
+      }
+      return book;
     });
+    localStorage.setItem("readList", JSON.stringify(updatedReadList));
+    setReadList(updatedReadList);
+
+    if (isListToggleOn) {
+      localStorage.setItem("isListToggleOn", "true");
+      localStorage.setItem("isGridToggleOn", "false");
+    } else if (isGridToggleOn) {
+      localStorage.setItem("isListToggleOn", "false");
+      localStorage.setItem("isGridToggleOn", "true");
+    }
   };
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -114,7 +137,10 @@ export const ReadList = () => {
             style={{
               display: "flex",
               justifyContent: "flex-end",
+              alignItems: "center",
               fontSize: "24px",
+              marginTop: "10px",
+              marginBottom: "10px",
             }}
           >
             <div
@@ -174,43 +200,66 @@ export const ReadList = () => {
 
           {isGridView ? (
             <Grid container spacing={3}>
-              {readList.map((title, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={title.title}>
+              {readList.map((book, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Card>
                     <CardActionArea>
                       <CardMedia
                         component="img"
                         height="200"
-                        // image={title.volumeInfo.imageLinks.thumbnail}
-                        image={`https://source.unsplash.com/featured/?${title.title}`}
-                        alt={title.title}
+                        image={book.volumeInfo.imageLinks.thumbnail}
+                        alt={book.volumeInfo.title}
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                          {title}
+                          {book.volumeInfo.title}
                         </Typography>
                         <Typography
                           variant="body2"
                           color="textSecondary"
                           component="p"
                         >
-                          Author
-                          {/* {book.volumeInfo.authors
+                          {book.volumeInfo.authors
                             ? book.volumeInfo.authors.join(", ")
-                            : "Author Unknown"} */}
+                            : "Author Unknown"}
                         </Typography>
                         <Typography
                           variant="body2"
                           color="textSecondary"
                           component="p"
                         >
-                          Publisher 01-02-2023
-                          {/* {book.volumeInfo.publisher} -{" "}
-                          {book.volumeInfo.publishedDate} */}
+                          {book.volumeInfo.publisher} -{" "}
+                          {book.volumeInfo.publishedDate}
                         </Typography>
                       </CardContent>
                     </CardActionArea>
-                    <CardActions>
+                    <CardActions sx={{ justifyContent: "flex-end" }}>
+                      <Box sx={{ ml: 1 }}>
+                        <Checkbox
+                          checked={book.isComplete}
+                          onChange={() => toggleChecked(book.id)}
+                          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                          checkedIcon={<CheckBoxIcon fontSize="small" />}
+                          {...label}
+                          className="my-checkbox"
+                          sx={{
+                            color: grey[500],
+                            "&.Mui-checked": {
+                              color: grey[500],
+                            },
+                            "&:hover": {
+                              color: grey[500],
+                            },
+                          }}
+                          checkedColor={grey[500]}
+                        />
+                      </Box>
+                      <Box sx={{ ml: 1 }}>
+                        <IconButton onClick={() => deleteReadList(book.id)}>
+                          <ClearIcon />
+                        </IconButton>
+                      </Box>
+
                       <Button
                         size="small"
                         color="primary"
@@ -221,6 +270,10 @@ export const ReadList = () => {
                           backgroundColor: "white",
                           borderRadius: "10%",
                           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                          "&:hover": {
+                            backgroundColor: "black",
+                            color: "white",
+                          },
                         }}
                         onClick={() => window.open(book.volumeInfo.previewLink)}
                       >
@@ -241,112 +294,110 @@ export const ReadList = () => {
               }}
             >
               <List>
-                {readList.map((title, index) => (
-                  <Box
-                    key={title.title}
-                    sx={{
-                      borderBottom:
-                        index === readList.length - 1
-                          ? "none"
-                          : "1px solid black",
-                    }}
-                  >
-                    <ListItem
-                      index={index}
-                      deleteReadList={() => deleteReadList(title)}
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Checkbox
-                          {...label}
-                          icon={<CheckBoxOutlineBlankIcon />}
-                          checkedIcon={<CheckBoxIcon />}
-                          checked={title.isComplete}
-                          onChange={() => toggleChecked(title)}
-                          sx={{
-                            color: grey[800],
-                            "&.Mui-checked": {
-                              color: grey[600],
-                            },
-                          }}
-                        />
-                        <ListItemText
-                          style={{
-                            fontWeight: "bold",
-                            textTransform: "none",
-                          }}
-                          primary={
-                            <Typography
-                              component="span"
-                              variant="body1"
-                              color="textPrimary"
-                              style={{
-                                fontSize: "18px",
-                                textTransform: "uppercase",
-                                fontWeight: "bold",
-                              }}
+                {readList.map((book) => (
+                  <ListItem key={book.id}>
+                    <Card sx={{ width: "100%" }}>
+                      <CardActionArea>
+                        <Grid container spacing={2}>
+                          <Grid item>
+                            <CardMedia
+                              component="img"
+                              sx={{ width: 80 }}
+                              image={book.volumeInfo.imageLinks?.thumbnail}
+                              alt={book.volumeInfo.title}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm container>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
                             >
-                              {title}
-                            </Typography>
-                          }
-                          secondary={
-                            <>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                                style={{
-                                  display: "block",
-                                  fontSize: "13px",
-                                }}
-                              >
-                                {/* {author} */}
-                                Author
-                              </Typography>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                                style={{ display: "block", fontSize: "13px" }}
-                              >
-                                {/* {publisher}, {publishingDate} */}
-                                Publisher 01-02-2023
-                              </Typography>
-                            </>
-                          }
-                        />
-                      </Box>
-                      <Box sx={{ display: "flex" }}>
-                        <Button
-                          size="small"
-                          color="primary"
-                          sx={{
-                            color: "black",
-                            outline: "1px solid black",
-                            backgroundColor: "white",
-                            borderRadius: "10%",
-                            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                            marginRight: "15px",
-                          }}
-                          // onClick={() => window.open(book.volumeInfo.previewLink)}
-                        >
-                          Read
-                        </Button>
-                        <IconButton
-                          onClick={() => deleteReadList(index)}
-                          edge="start"
-                          sx={{
-                            color: grey[800],
-                            "&.Mui-checked": {
-                              color: grey[600],
-                            },
-                          }}
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                      </Box>
-                    </ListItem>
-                  </Box>
+                              <Grid item xs>
+                                <ListItemText
+                                  primary={
+                                    <Typography
+                                      variant="subtitle1"
+                                      fontWeight="bold"
+                                      style={{ textTransform: "uppercase" }}
+                                    >
+                                      {book.volumeInfo.title}
+                                    </Typography>
+                                  }
+                                  secondary={`by ${book.volumeInfo.authors?.join(
+                                    ", "
+                                  )}`}
+                                />
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                  gutterBottom
+                                >
+                                  {`Published by ${book.volumeInfo.publisher} on ${book.volumeInfo.publishedDate}`}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <CardActions>
+                                <Checkbox
+                                  checked={book.isComplete}
+                                  onChange={() => toggleChecked(book.id)}
+                                  icon={
+                                    <CheckBoxOutlineBlankIcon fontSize="small" />
+                                  }
+                                  checkedIcon={
+                                    <CheckBoxIcon fontSize="small" />
+                                  }
+                                  {...label}
+                                  className="my-checkbox"
+                                  sx={{
+                                    color: grey[500],
+                                    "&.Mui-checked": {
+                                      color: grey[500],
+                                    },
+                                    "&:hover": {
+                                      color: grey[500],
+                                    },
+                                  }}
+                                  checkedColor={grey[500]}
+                                />
+                                <IconButton
+                                  onClick={() => deleteReadList(book.id)}
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+
+                                <Button
+                                  size="small"
+                                  color="primary"
+                                  sx={{
+                                    color: "black",
+                                    outline: "1px solid black",
+                                    margin: "0 8px",
+                                    backgroundColor: "white",
+                                    borderRadius: "10%",
+                                    boxShadow:
+                                      "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                                    "&:hover": {
+                                      backgroundColor: "black",
+                                      color: "white",
+                                    },
+                                  }}
+                                  onClick={() =>
+                                    window.open(book.volumeInfo.previewLink)
+                                  }
+                                >
+                                  Read
+                                </Button>
+                              </CardActions>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </CardActionArea>
+                    </Card>
+                  </ListItem>
                 ))}
               </List>
             </Box>

@@ -67,12 +67,12 @@ export const Review = () => {
         sx={{
           border: "2px solid black",
           padding: 2,
-          maxWidth: 600,
+          maxWidth: 1200,
           margin: "auto",
           marginTop: 7,
         }}
       >
-        <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 0 }}>
+        <Card sx={{ maxWidth: 1200, margin: "auto", marginTop: 0 }}>
           <CardMedia
             component="img"
             height="400"
@@ -97,7 +97,7 @@ export const Review = () => {
           {reviews.map((review, index) => (
             <Card
               key={index}
-              sx={{ maxWidth: 600, margin: "auto", marginTop: 0.5 }}
+              sx={{ maxWidth: 1000, margin: "auto", marginTop: 0.5 }}
             >
               <ListItem>
                 <Typography>
