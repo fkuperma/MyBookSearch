@@ -81,6 +81,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.5)",
+    margin: "0 8px",
   },
   cardMedia: {
     paddingTop: "56.25%",
@@ -133,6 +134,11 @@ export const LoginPrompt = ({ onLogout }) => {
   };
   const handleLogoutClick = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("clickedSearch");
+    localStorage.removeItem("searchResults");
+    localStorage.removeItem("searchTerm");
+    localStorage.removeItem("searchType");
+    localStorage.removeItem("readList");
     onLogout();
   };
 

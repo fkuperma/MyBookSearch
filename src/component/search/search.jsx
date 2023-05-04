@@ -163,7 +163,10 @@ export const Search = (props) => {
 
   const handleReadClick = (book) => {
     setSelectedBook(book);
-    navigate("/readList", { state: { book } });
+    const readList = JSON.parse(localStorage.getItem("readList")) || [];
+    readList.push(book.volumeInfo.title);
+    localStorage.setItem("readList", JSON.stringify(readList));
+    navigate("/readList");
   };
 
   useEffect(() => {

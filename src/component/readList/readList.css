@@ -27,6 +27,12 @@ h1 {
 .deleteIcon {
   margin-left: 50%;
 }
-.fab {
-  margin-left: 90%;
+
+.grid-icon-button:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.2);
+}
+.list-icon-button:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.2);
 }
