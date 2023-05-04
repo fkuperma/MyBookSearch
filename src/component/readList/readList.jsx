@@ -271,12 +271,49 @@ export const ReadList = () => {
                           }}
                         />
                         <ListItemText
-                          primary={title}
                           style={{
-                            fontSize: "25px",
-                            fontFamily: "Arial",
-                            textTransform: "uppercase",
+                            fontWeight: "bold",
+                            textTransform: "none",
                           }}
+                          primary={
+                            <Typography
+                              component="span"
+                              variant="body1"
+                              color="textPrimary"
+                              style={{
+                                fontSize: "18px",
+                                textTransform: "uppercase",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {title}
+                            </Typography>
+                          }
+                          secondary={
+                            <>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                                style={{
+                                  display: "block",
+                                  fontSize: "13px",
+                                }}
+                              >
+                                {/* {author} */}
+                                Author
+                              </Typography>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                                style={{ display: "block", fontSize: "13px" }}
+                              >
+                                {/* {publisher}, {publishingDate} */}
+                                Publisher 01-02-2023
+                              </Typography>
+                            </>
+                          }
                         />
                       </Box>
                       <Box sx={{ display: "flex" }}>
