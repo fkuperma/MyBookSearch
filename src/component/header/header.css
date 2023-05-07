@@ -4,3 +4,20 @@
 .title {
   font-size: 100rem !important;
 }
+@media (max-width: 576px) {
+  .my-component {
+    width: 100%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .my-component {
+    width: 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  .my-component {
+    width: 33.33%;
+  }
+}

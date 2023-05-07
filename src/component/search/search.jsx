@@ -161,15 +161,21 @@ export const Search = (props) => {
       handleSearch();
     }
   };
+
   const handleSearchOptionChange = (event) => {
     const value = event.target.value;
-    setInputDisabled(false);
-    setSearchResults([]);
-    setClickedSearch(false);
-    setSearchTerm("");
     setSearchType(value);
     setSelectedOption(value);
+    if (value === "") {
+      setInputDisabled(true);
+      setSearchResults([]);
+      setClickedSearch(false);
+      setSearchTerm("");
+    } else {
+      setInputDisabled(false);
+    }
   };
+
   const handleReviewClick = (book) => {
     setSelectedBook(book);
     const storedReviews = localStorage.getItem("reviews")
@@ -251,7 +257,9 @@ export const Search = (props) => {
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               id="search-term"
-              label={searchTerm ? "Search Term" : "Choose option to search"}
+              label={
+                searchTerm ? "Search Term" : "Choose an option to search by"
+              }
               variant="outlined"
               value={searchTerm}
               placeholder={searchTerm ? "Enter search term" : "Search Term"}
@@ -269,6 +277,7 @@ export const Search = (props) => {
               size="large"
               disableElevation
               onClick={handleSearch}
+              disabled={searchType === ""}
               style={{ height: "55px" }}
               fullWidth
             >
@@ -289,7 +298,7 @@ export const Search = (props) => {
             }
             label={
               <span style={{ fontSize: "1.2rem" }}>
-                Show Only Books With Reviews
+                Show only books with reviews
               </span>
             }
           />
@@ -323,7 +332,7 @@ export const Search = (props) => {
             }}
           >
             <Typography variant="h4">
-              Please enter a Search Term to find books
+              Please enter a search term to find books
             </Typography>
           </div>
         ) : null}

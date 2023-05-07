@@ -120,7 +120,7 @@ export const ReadList = () => {
           textAlign: "center",
         }}
       >
-        {username ? `${username}'s READ LIST` : "LOG IN"}
+        {username ? `${username}'s READ LIST` : "LOG IN TO"}
       </Typography>
       {hasBooks ? (
         <>
