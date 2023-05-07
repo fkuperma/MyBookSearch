@@ -95,9 +95,18 @@ export const ReadList = () => {
 
   const hasBooks = readList.length > 0;
   const chooseBookMessage = (
-    <Typography variant="h4" style={{ textAlign: "center" }}>
-      Choose a book to add to your read list
-    </Typography>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
+      }}
+    >
+      <Typography variant="h4" style={{ textAlign: "center" }}>
+        Choose a book to add to your read list
+      </Typography>
+    </div>
   );
 
   return (
@@ -111,7 +120,7 @@ export const ReadList = () => {
           textAlign: "center",
         }}
       >
-        {username ? `${username}'s READ LIST` : "LOG IN TO"}
+        {username ? `${username}'s READ LIST` : "LOG IN"}
       </Typography>
       {hasBooks ? (
         <>

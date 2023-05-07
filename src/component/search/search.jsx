@@ -15,6 +15,8 @@ import {
   Select,
   MenuItem,
   TextField,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -126,13 +128,24 @@ export const Search = (props) => {
   const [inputDisabled, setInputDisabled] = useState(searchType === "");
   const navigate = useNavigate();
   const [selectedBook, setSelectedBook] = useState(null);
+  const [showOnlyReviewed, setShowOnlyReviewed] = useState(false);
 
-  async function getSearchResults(searchType, searchTerm) {
+  async function getSearchResults(searchType, searchTerm, filter) {
     const response = await fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${searchType}:${searchTerm}`
     );
     const data = await response.json();
-    setSearchResults(data.items);
+    let items = data.items;
+
+    if (filter) {
+      const storedReviews = localStorage.getItem("reviews")
+        ? JSON.parse(localStorage.getItem("reviews"))
+        : {};
+
+      items = items.filter((book) => storedReviews[book.id]);
+    }
+
+    setSearchResults(items);
     setClickedSearch(true);
   }
 
@@ -140,7 +153,7 @@ export const Search = (props) => {
     if (searchTerm.trim() === "") {
       return;
     }
-    await getSearchResults(searchType, searchTerm);
+    await getSearchResults(searchType, searchTerm, showOnlyReviewed);
   };
 
   const handleKeyPress = (event) => {
@@ -177,6 +190,10 @@ export const Search = (props) => {
     readList.push(book);
     localStorage.setItem("readList", JSON.stringify(readList));
     navigate("/readList");
+  };
+
+  const handleShowOnlyReviewedChange = (event) => {
+    setShowOnlyReviewed(event.target.checked);
   };
 
   useEffect(() => {
@@ -260,12 +277,41 @@ export const Search = (props) => {
           </Grid>
         </Grid>
         <br></br>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showOnlyReviewed}
+                onChange={handleShowOnlyReviewedChange}
+                name="showOnlyReviewed"
+                color="black"
+              />
+            }
+            label={
+              <span style={{ fontSize: "1.2rem" }}>
+                Show Only Books With Reviews
+              </span>
+            }
+          />
+        </div>
+
+        <br></br>
         <hr className="underline"></hr>
+        <br></br>
         {clickedSearch &&
         searchResults.length === 0 &&
         searchTerm.trim() !== "" ? (
-          <Typography variant="body1" color="error">
-            No results found. Please try another search term.
+          <Typography
+            variant="body1"
+            color="error"
+            style={{
+              fontSize: "1.2rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            No results found. Please try another search term or choose to view
+            all books.
           </Typography>
         ) : searchTerm.trim() === "" ? (
           <div
@@ -282,6 +328,7 @@ export const Search = (props) => {
           </div>
         ) : null}
       </div>
+
       <Grid container spacing={3}>
         {searchResults.map((book) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
