@@ -20,73 +20,38 @@ export const Review = () => {
   const book = location.state?.book;
 
   const [reviewText, setReviewText] = useState("");
-  const [reviewState, setReviewState] = useState({
-    book: null,
-    reviews: [],
-  });
+  const [reviews, setReviews] = useState([]);
   const [buttonHovered, setButtonHovered] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    const storedReviewState = localStorage.getItem("reviewState");
-    if (storedReviewState) {
-      setReviewState(JSON.parse(storedReviewState));
-    } else {
-      setReviewState({
-        book: book,
-        reviews: [],
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("reviewState", JSON.stringify(reviewState));
-  }, [reviewState]);
-
-  useEffect(() => {
-    if (book) {
-      setReviewState({
-        ...reviewState,
-        book: book,
-      });
+    if (book && book.id) {
+      const storedReviews = JSON.parse(localStorage.getItem("reviews")) || {};
+      const bookReviews = storedReviews[book.id] || [];
+      setReviews(bookReviews);
     }
   }, [book]);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const storedReviewState = localStorage.getItem("reviewState");
-      if (storedReviewState) {
-        setReviewState(JSON.parse(storedReviewState));
-      }
-    };
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
     if (reviewText.trim() !== "") {
-      setReviewState({
-        ...reviewState,
-        reviews: [...reviewState.reviews, reviewText],
-      });
+      setReviews([...reviews, { username, reviewText }]);
       setReviewText("");
+
+      const storedReviews = JSON.parse(localStorage.getItem("reviews")) || {};
+      const bookReviews = storedReviews[book.id] || [];
+      localStorage.setItem(
+        "reviews",
+        JSON.stringify({
+          ...storedReviews,
+          [book.id]: [...bookReviews, { username, reviewText }],
+        })
+      );
     }
   };
 
-  useEffect(() => {
-    if (book) {
-      setReviewState({
-        ...reviewState,
-        book: book,
-      });
-    }
-  }, [book]);
-
-  if (!reviewState.book) {
+  if (!book) {
     return (
       <div
         style={{
@@ -119,34 +84,33 @@ export const Review = () => {
           <CardMedia
             component="img"
             height="500"
-            image={reviewState.book.volumeInfo.imageLinks.thumbnail}
-            alt={reviewState.book.volumeInfo.title}
+            image={book.volumeInfo.imageLinks.thumbnail}
+            alt={book.volumeInfo.title}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {reviewState.book.volumeInfo.title}
+              {book.volumeInfo.title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {reviewState.book.volumeInfo.authors
-                ? reviewState.book.volumeInfo.authors.join(", ")
+              {book.volumeInfo.authors
+                ? book.volumeInfo.authors.join(", ")
                 : "Author Unknown"}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {reviewState.book.volumeInfo.publisher} -{" "}
-              {reviewState.book.volumeInfo.publishedDate}
+              {book.volumeInfo.publisher} - {book.volumeInfo.publishedDate}
             </Typography>
           </CardContent>
         </Card>
-        {reviewState.book && (
+        {reviews.length > 0 && (
           <List>
-            {reviewState.reviews.map((review, index) => (
+            {reviews.map((review, index) => (
               <Card
                 key={index}
                 sx={{ maxWidth: 1000, margin: "auto", marginTop: 0.5 }}
               >
                 <ListItem>
                   <Typography>
-                    <strong>{username}</strong> : {review}
+                    <strong>{review.username}</strong> : {review.reviewText}
                   </Typography>
                 </ListItem>
               </Card>

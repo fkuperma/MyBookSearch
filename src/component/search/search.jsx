@@ -157,11 +157,17 @@ export const Search = (props) => {
     setSearchType(value);
     setSelectedOption(value);
   };
-
   const handleReviewClick = (book) => {
     setSelectedBook(book);
-    const review = JSON.parse(localStorage.getItem("reviewState")) || [];
-    localStorage.setItem("reviewState", JSON.stringify(review));
+    const storedReviews = localStorage.getItem("reviews")
+      ? JSON.parse(localStorage.getItem("reviews"))
+      : {};
+    const reviews = storedReviews[book.id] || [];
+
+    localStorage.setItem(
+      "reviews",
+      JSON.stringify({ ...storedReviews, [book.id]: reviews })
+    );
     navigate("/review", { state: { book } });
   };
 
