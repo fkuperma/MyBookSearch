@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { Review } from "../review/review";
 import { ReadList } from "../readList/readList";
 import "./search.css";
+import { Reviews } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   root: {
@@ -159,6 +160,8 @@ export const Search = (props) => {
 
   const handleReviewClick = (book) => {
     setSelectedBook(book);
+    const review = JSON.parse(localStorage.getItem("reviewState")) || [];
+    localStorage.setItem("reviewState", JSON.stringify(review));
     navigate("/review", { state: { book } });
   };
 

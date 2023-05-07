@@ -20,31 +20,73 @@ export const Review = () => {
   const book = location.state?.book;
 
   const [reviewText, setReviewText] = useState("");
-  const [reviews, setReviews] = useState([]);
+  const [reviewState, setReviewState] = useState({
+    book: null,
+    reviews: [],
+  });
   const [buttonHovered, setButtonHovered] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    const storedReviews = localStorage.getItem("reviews");
-    if (storedReviews) {
-      setReviews(JSON.parse(storedReviews));
+    const storedReviewState = localStorage.getItem("reviewState");
+    if (storedReviewState) {
+      setReviewState(JSON.parse(storedReviewState));
+    } else {
+      setReviewState({
+        book: book,
+        reviews: [],
+      });
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-  }, [reviews]);
+    localStorage.setItem("reviewState", JSON.stringify(reviewState));
+  }, [reviewState]);
+
+  useEffect(() => {
+    if (book) {
+      setReviewState({
+        ...reviewState,
+        book: book,
+      });
+    }
+  }, [book]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedReviewState = localStorage.getItem("reviewState");
+      if (storedReviewState) {
+        setReviewState(JSON.parse(storedReviewState));
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
     if (reviewText.trim() !== "") {
-      setReviews([...reviews, reviewText]);
+      setReviewState({
+        ...reviewState,
+        reviews: [...reviewState.reviews, reviewText],
+      });
       setReviewText("");
     }
   };
 
-  if (!book) {
+  useEffect(() => {
+    if (book) {
+      setReviewState({
+        ...reviewState,
+        book: book,
+      });
+    }
+  }, [book]);
+
+  if (!reviewState.book) {
     return (
       <div
         style={{
@@ -67,52 +109,57 @@ export const Review = () => {
         sx={{
           border: "2px solid black",
           padding: 2,
-          maxWidth: 1200,
+          maxWidth: "1000 !important",
           margin: "auto",
+          width: "45%",
           marginTop: 7,
         }}
       >
-        <Card sx={{ maxWidth: 1200, margin: "auto", marginTop: 0 }}>
+        <Card sx={{ maxWidth: "500 !important", margin: "auto", marginTop: 0 }}>
           <CardMedia
             component="img"
-            height="400"
-            image={book.volumeInfo.imageLinks.thumbnail}
-            alt={book.volumeInfo.title}
+            height="500"
+            image={reviewState.book.volumeInfo.imageLinks.thumbnail}
+            alt={reviewState.book.volumeInfo.title}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {book.volumeInfo.title}
+              {reviewState.book.volumeInfo.title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {book.volumeInfo.authors
-                ? book.volumeInfo.authors.join(", ")
+              {reviewState.book.volumeInfo.authors
+                ? reviewState.book.volumeInfo.authors.join(", ")
                 : "Author Unknown"}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {book.volumeInfo.publisher} - {book.volumeInfo.publishedDate}
+              {reviewState.book.volumeInfo.publisher} -{" "}
+              {reviewState.book.volumeInfo.publishedDate}
             </Typography>
           </CardContent>
         </Card>
-        <List>
-          {reviews.map((review, index) => (
-            <Card
-              key={index}
-              sx={{ maxWidth: 1000, margin: "auto", marginTop: 0.5 }}
-            >
-              <ListItem>
-                <Typography>
-                  <strong>{username}</strong> : {review}
-                </Typography>
-              </ListItem>
-            </Card>
-          ))}
-        </List>
+        {reviewState.book && (
+          <List>
+            {reviewState.reviews.map((review, index) => (
+              <Card
+                key={index}
+                sx={{ maxWidth: 1000, margin: "auto", marginTop: 0.5 }}
+              >
+                <ListItem>
+                  <Typography>
+                    <strong>{username}</strong> : {review}
+                  </Typography>
+                </ListItem>
+              </Card>
+            ))}
+          </List>
+        )}
+
         <form onSubmit={handleReviewSubmit}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              maxWidth: 600,
+              maxWidth: 900,
               margin: "auto",
               marginTop: 2,
               position: "relative",
@@ -127,7 +174,7 @@ export const Review = () => {
               onChange={(event) => setReviewText(event.target.value)}
               sx={{
                 width: "100%",
-                maxWidth: 600,
+                maxWidth: "100%",
                 margin: "auto",
                 "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                   {
@@ -182,6 +229,7 @@ export const Review = () => {
           </Box>
         </form>
       </Box>
+      <br></br>
     </div>
   );
 };

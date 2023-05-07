@@ -66,24 +66,6 @@ export const ReadList = () => {
     };
   }, []);
 
-  // const onInput = (event) => {
-  //   console.log(event.target.value);
-  //   setInput(event.target.value);
-  // };
-
-  // const addReadList = () => {
-  //   const newBook = {
-  //     title: book.volumeInfo.title,
-  //     image: book.volumeInfo.imageLinks.thumbnail,
-  //     isComplete: false,
-  //   };
-  //   readListDispatch({
-  //     type: ReadListActions.ADD,
-  //     readList: newBook,
-  //   });
-  //   setInput("");
-  // };
-
   const deleteReadList = (id) => {
     const updatedReadList = readList.filter((book) => book.id !== id);
     localStorage.setItem("readList", JSON.stringify(updatedReadList));
@@ -129,7 +111,7 @@ export const ReadList = () => {
           textAlign: "center",
         }}
       >
-        {username ? `${username}'s READ LIST` : "READ LIST"}
+        {username ? `${username}'s READ LIST` : "LOG IN TO"}
       </Typography>
       {hasBooks ? (
         <>
