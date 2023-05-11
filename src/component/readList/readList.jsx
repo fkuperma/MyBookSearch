@@ -4,8 +4,6 @@ import { ReadListContext } from "../../state/readList/readList-context";
 import "./readList.css";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Checkbox from "@mui/material/Checkbox";
 import { grey } from "@mui/material/colors";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -13,7 +11,6 @@ import GridOnIcon from "@mui/icons-material/GridOn";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
-
 import { ReadListActions } from "../../state/readList/readList.reducer";
 
 import {
@@ -21,7 +18,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  TextField,
   Button,
   List,
   ListItem,

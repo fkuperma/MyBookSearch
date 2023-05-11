@@ -150,7 +150,6 @@ export const LoginPrompt = ({ onLogout }) => {
     <div>
       {localStorage.getItem("username") ? (
         <Paper className={classes.paper} onClick={handleLogoutClick}>
-          {/* Log Out ({localStorage.getItem("username")}) */}
           Log Out
         </Paper>
       ) : (

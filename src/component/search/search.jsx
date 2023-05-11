@@ -25,10 +25,7 @@ import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { SearchContext } from "../../state/search/search-context.jsx";
 import { useNavigate } from "react-router-dom";
-import { Review } from "../review/review";
-import { ReadList } from "../readList/readList";
 import "./search.css";
-import { Reviews } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   root: {
@@ -226,7 +223,6 @@ export const Search = (props) => {
 
   return (
     <div className="container">
-      {/* <Typography variant="h4">Book Search</Typography> */}
       <div>
         <br />
         <br />
