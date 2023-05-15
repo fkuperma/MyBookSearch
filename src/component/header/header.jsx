@@ -5,9 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +71,6 @@ export function Header() {
               display: { xs: "none", md: "flex" },
               fontFamily: "revert",
               fontSize: "45px !important",
-              //fontSize: "45px",
               fontWeight: "bold",
               letterSpacing: ".3rem",
               color: "white",
