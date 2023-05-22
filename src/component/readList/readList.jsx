@@ -54,24 +54,12 @@ export const ReadList = () => {
     };
     window.addEventListener("beforeunload", clearReadList);
 
-    const storedIsListToggleOn = localStorage.getItem("isListToggleOn");
-    const storedIsGridToggleOn = localStorage.getItem("isGridToggleOn");
-
-    if (storedIsListToggleOn !== null && storedIsGridToggleOn !== null) {
-      setIsListToggleOn(storedIsListToggleOn === "true");
-      setIsGridToggleOn(storedIsGridToggleOn === "true");
-      setIsGridView(storedIsGridToggleOn === "true");
-    }
-
     return () => {
       window.removeEventListener("beforeunload", clearReadList);
     };
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("isListToggleOn", isListToggleOn.toString());
-    localStorage.setItem("isGridToggleOn", isGridToggleOn.toString());
-  }, [isListToggleOn, isGridToggleOn]);
+  useEffect(() => {}, [isListToggleOn, isGridToggleOn]);
 
   useEffect(() => {
     localStorage.setItem("isGridView", JSON.stringify(isGridView));
@@ -92,9 +80,11 @@ export const ReadList = () => {
     });
 
     if (isGridView) {
+      setIsGridView(false);
       setIsListToggleOn(true);
       setIsGridToggleOn(false);
     } else {
+      setIsGridView(true);
       setIsListToggleOn(false);
       setIsGridToggleOn(true);
     }
@@ -104,6 +94,7 @@ export const ReadList = () => {
 
     localStorage.setItem("isListToggleOn", isListToggleOn.toString());
     localStorage.setItem("isGridToggleOn", isGridToggleOn.toString());
+    localStorage.setItem("isGridView", JSON.stringify(isGridView));
   };
 
   const handleReviewClick = (book) => {
@@ -193,20 +184,6 @@ export const ReadList = () => {
                 <FormatListBulletedIcon style={{ fontSize: "40px" }} />
               </IconButton>
 
-              <span
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "50%",
-                  width: "1px",
-                  height: "100%",
-                  backgroundColor: "black",
-                  transform: "translate(-50%)",
-                  zIndex: 1,
-                  content: '""',
-                }}
-              />
-
               <IconButton
                 color={isGridView ? "primary" : "default"}
                 onClick={() => {
@@ -228,6 +205,7 @@ export const ReadList = () => {
               </IconButton>
             </div>
           </div>
+          <hr className="underline"></hr>
           <br></br>
 
           {isGridView ? (

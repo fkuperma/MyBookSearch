@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import "./review.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import ReplyIcon from "@mui/icons-material/Reply";
 import { useNavigate } from "react-router-dom";
 
 export const Review = () => {
@@ -27,6 +28,8 @@ export const Review = () => {
   const [buttonHovered, setButtonHovered] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const username = localStorage.getItem("username");
+  const [replyText, setReplyText] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
 
   useEffect(() => {
     if (book && book.id) {
@@ -42,6 +45,38 @@ export const Review = () => {
     readList.push(book);
     localStorage.setItem("readList", JSON.stringify(readList));
     navigate("/readList");
+  };
+
+  const handleReplySubmit = (event, reviewIndex) => {
+    event.preventDefault();
+    if (replyText.trim() !== "") {
+      const updatedReviews = [...reviews];
+      const review = updatedReviews[reviewIndex];
+      review.replies = review.replies || [];
+      review.replies.push({ username, replyText });
+      setReviews(updatedReviews);
+      setReplyText("");
+
+      const storedReviews = JSON.parse(localStorage.getItem("reviews")) || {};
+      const bookReviews = storedReviews[book.id] || [];
+      const updatedBookReviews = bookReviews.map((r, index) =>
+        index === reviewIndex
+          ? {
+              ...r,
+              replies: r.replies
+                ? [...r.replies, { username, replyText }]
+                : [{ username, replyText }],
+            }
+          : r
+      );
+      localStorage.setItem(
+        "reviews",
+        JSON.stringify({
+          ...storedReviews,
+          [book.id]: updatedBookReviews,
+        })
+      );
+    }
   };
 
   const handleReviewSubmit = (event) => {
@@ -154,12 +189,76 @@ export const Review = () => {
             {reviews.map((review, index) => (
               <Card
                 key={index}
-                sx={{ maxWidth: 1000, margin: "auto", marginTop: 0.5 }}
+                sx={{
+                  maxWidth: 1000,
+                  margin: "auto",
+                  marginTop: 0.9,
+                  border: "1px solid black",
+                }}
               >
                 <ListItem>
                   <Typography>
                     <strong>{review.username}</strong> : {review.reviewText}
                   </Typography>
+                </ListItem>
+                <hr className="underline"></hr>
+                {review.replies &&
+                  review.replies.map((reply, replyIndex) => (
+                    <ListItem key={replyIndex}>
+                      <Typography>
+                        <strong>{reply.username}</strong> : {reply.replyText}
+                      </Typography>
+                    </ListItem>
+                  ))}
+                <ListItem sx={{ display: "flex", alignItems: "center" }}>
+                  <TextField
+                    label="Reply"
+                    variant="outlined"
+                    fullWidth
+                    value={replyText}
+                    onChange={(event) => setReplyText(event.target.value)}
+                    sx={{
+                      flex: 1,
+                      "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                        {
+                          borderColor: "black",
+                        },
+                      "& .MuiFormLabel-root.Mui-focused": {
+                        color: "black",
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <IconButton
+                          onClick={(event) => handleReplySubmit(event, index)}
+                          type="submit"
+                          edge="start"
+                          color="secondary"
+                          size="large"
+                          sx={{
+                            marginRight: "10px",
+                            bgcolor: buttonClicked ? "#000" : "",
+                            color: buttonClicked ? "#fff" : "#000",
+                            "&:hover": {
+                              bgcolor: "transparent",
+                              border: "1px solid black",
+                              bgcolor: "black",
+                              color: "white",
+                            },
+                            "&:active": {
+                              bgcolor: buttonClicked ? "#000" : "",
+                            },
+                          }}
+                          onMouseEnter={() => setButtonHovered(true)}
+                          onMouseLeave={() => setButtonHovered(false)}
+                          onMouseDown={() => setButtonClicked(true)}
+                          onMouseUp={() => setButtonClicked(false)}
+                        >
+                          <ReplyIcon />
+                        </IconButton>
+                      ),
+                    }}
+                  />
                 </ListItem>
               </Card>
             ))}

@@ -25,3 +25,12 @@
 .content {
   flex: 1;
 }
+
+hr.underline {
+  border: 0;
+  height: 1px;
+  background-color: black;
+  width: 100%;
+  align-items: center;
+  margin-left: 0rem;
+}
