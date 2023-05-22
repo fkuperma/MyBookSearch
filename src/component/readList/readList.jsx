@@ -163,8 +163,6 @@ export const ReadList = () => {
                   setIsGridView(false);
                   setIsListToggleOn(true);
                   setIsGridToggleOn(false);
-                  localStorage.setItem("isListToggleOn", "true");
-                  localStorage.setItem("isGridToggleOn", "false");
                 }}
                 style={{
                   color: "black",
@@ -196,8 +194,6 @@ export const ReadList = () => {
                   setIsGridView(true);
                   setIsListToggleOn(false);
                   setIsGridToggleOn(true);
-                  localStorage.setItem("isListToggleOn", "false");
-                  localStorage.setItem("isGridToggleOn", "true");
                 }}
                 style={{
                   color: "black",
@@ -223,7 +219,10 @@ export const ReadList = () => {
                       <CardMedia
                         component="img"
                         height="200"
-                        image={book.volumeInfo.imageLinks.thumbnail}
+                        image={
+                          book.volumeInfo.imageLinks?.thumbnail ||
+                          "placeholder-image-url"
+                        }
                         alt={book.volumeInfo.title}
                       />
                       <CardContent>
@@ -332,7 +331,10 @@ export const ReadList = () => {
                             <CardMedia
                               component="img"
                               sx={{ width: 80 }}
-                              image={book.volumeInfo.imageLinks?.thumbnail}
+                              image={
+                                book.volumeInfo.imageLinks?.thumbnail ||
+                                "placeholder-image-url"
+                              }
                               alt={book.volumeInfo.title}
                             />
                           </Grid>

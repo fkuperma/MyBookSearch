@@ -80,12 +80,17 @@ export const Review = () => {
         }}
       >
         <Card sx={{ maxWidth: "500 !important", margin: "auto", marginTop: 0 }}>
-          <CardMedia
-            component="img"
-            height="500"
-            image={book.volumeInfo.imageLinks.thumbnail}
-            alt={book.volumeInfo.title}
-          />
+          {book.volumeInfo.imageLinks &&
+          book.volumeInfo.imageLinks.thumbnail ? (
+            <CardMedia
+              component="img"
+              height="500"
+              image={book.volumeInfo.imageLinks.thumbnail}
+              alt={book.volumeInfo.title}
+            />
+          ) : (
+            <div>No Image Available</div>
+          )}
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {book.volumeInfo.title}
