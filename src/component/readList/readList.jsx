@@ -221,7 +221,7 @@ export const ReadList = () => {
                         height="200"
                         image={
                           book.volumeInfo.imageLinks?.thumbnail ||
-                          "placeholder-image-url"
+                          "https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns="
                         }
                         alt={book.volumeInfo.title}
                       />
@@ -333,7 +333,7 @@ export const ReadList = () => {
                               sx={{ width: 80 }}
                               image={
                                 book.volumeInfo.imageLinks?.thumbnail ||
-                                "placeholder-image-url"
+                                "https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns="
                               }
                               alt={book.volumeInfo.title}
                             />
