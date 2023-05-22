@@ -12,6 +12,8 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
 import { ReadListActions } from "../../state/readList/readList.reducer";
+import { useNavigate } from "react-router-dom";
+import RateReviewIcon from "@mui/icons-material/RateReview";
 
 import {
   Typography,
@@ -38,6 +40,8 @@ export const ReadList = () => {
   const [isGridView, setIsGridView] = useState(false);
   const [isListToggleOn, setIsListToggleOn] = useState(false);
   const [isGridToggleOn, setIsGridToggleOn] = useState(false);
+  const navigate = useNavigate();
+  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     const list = JSON.parse(localStorage.getItem("readList")) || [];
@@ -47,14 +51,13 @@ export const ReadList = () => {
     };
     window.addEventListener("beforeunload", clearReadList);
 
-    const isListToggleOn = localStorage.getItem("isListToggleOn");
-    if (isListToggleOn !== null) {
-      setIsListToggleOn(isListToggleOn === "true");
-    }
+    const storedIsListToggleOn = localStorage.getItem("isListToggleOn");
+    const storedIsGridToggleOn = localStorage.getItem("isGridToggleOn");
 
-    const isGridToggleOn = localStorage.getItem("isGridToggleOn");
-    if (isGridToggleOn !== null) {
-      setIsGridToggleOn(isGridToggleOn === "true");
+    if (storedIsListToggleOn !== null && storedIsGridToggleOn !== null) {
+      setIsListToggleOn(storedIsListToggleOn === "true");
+      setIsGridToggleOn(storedIsGridToggleOn === "true");
+      setIsGridView(storedIsGridToggleOn === "true");
     }
 
     return () => {
@@ -78,13 +81,27 @@ export const ReadList = () => {
     localStorage.setItem("readList", JSON.stringify(updatedReadList));
     setReadList(updatedReadList);
 
-    if (isListToggleOn) {
-      localStorage.setItem("isListToggleOn", "true");
-      localStorage.setItem("isGridToggleOn", "false");
-    } else if (isGridToggleOn) {
+    if (isGridView) {
       localStorage.setItem("isListToggleOn", "false");
       localStorage.setItem("isGridToggleOn", "true");
+    } else {
+      localStorage.setItem("isListToggleOn", "true");
+      localStorage.setItem("isGridToggleOn", "false");
     }
+  };
+
+  const handleReviewClick = (book) => {
+    setSelectedBook(book);
+    const storedReviews = localStorage.getItem("reviews")
+      ? JSON.parse(localStorage.getItem("reviews"))
+      : {};
+    const reviews = storedReviews[book.id] || [];
+
+    localStorage.setItem(
+      "reviews",
+      JSON.stringify({ ...storedReviews, [book.id]: reviews })
+    );
+    navigate("/review", { state: { book } });
   };
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -142,7 +159,13 @@ export const ReadList = () => {
             >
               <IconButton
                 color={isGridView ? "default" : "primary"}
-                onClick={() => setIsGridView(false)}
+                onClick={() => {
+                  setIsGridView(false);
+                  setIsListToggleOn(true);
+                  setIsGridToggleOn(false);
+                  localStorage.setItem("isListToggleOn", "true");
+                  localStorage.setItem("isGridToggleOn", "false");
+                }}
                 style={{
                   color: "black",
                   position: "relative",
@@ -169,7 +192,13 @@ export const ReadList = () => {
               />
               <IconButton
                 color={isGridView ? "primary" : "default"}
-                onClick={() => setIsGridView(true)}
+                onClick={() => {
+                  setIsGridView(true);
+                  setIsListToggleOn(false);
+                  setIsGridToggleOn(true);
+                  localStorage.setItem("isListToggleOn", "false");
+                  localStorage.setItem("isGridToggleOn", "true");
+                }}
                 style={{
                   color: "black",
                   position: "relative",
@@ -246,6 +275,19 @@ export const ReadList = () => {
                           <ClearIcon />
                         </IconButton>
                       </Box>
+                      <IconButton
+                        size="medium"
+                        sx={{
+                          color: "black",
+                          marginRight: "5px",
+                          backgroundColor: "white",
+                          borderRadius: "50%",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                        }}
+                        onClick={() => handleReviewClick(book)}
+                      >
+                        <RateReviewIcon />
+                      </IconButton>
 
                       <Button
                         size="small"
@@ -354,6 +396,20 @@ export const ReadList = () => {
                                   onClick={() => deleteReadList(book.id)}
                                 >
                                   <ClearIcon />
+                                </IconButton>
+                                <IconButton
+                                  size="medium"
+                                  sx={{
+                                    color: "black",
+                                    marginRight: "5px",
+                                    backgroundColor: "white",
+                                    borderRadius: "50%",
+                                    boxShadow:
+                                      "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                                  }}
+                                  onClick={() => handleReviewClick(book)}
+                                >
+                                  <RateReviewIcon />
                                 </IconButton>
 
                                 <Button
