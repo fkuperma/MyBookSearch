@@ -13,10 +13,14 @@ import {
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import "./review.css";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
 
 export const Review = () => {
   const location = useLocation();
   const book = location.state?.book;
+  const navigate = useNavigate();
+  const [selectedBook, setSelectedBook] = useState(null);
 
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState([]);
@@ -31,6 +35,14 @@ export const Review = () => {
       setReviews(bookReviews);
     }
   }, [book]);
+
+  const handleReadClick = (book) => {
+    setSelectedBook(book);
+    const readList = JSON.parse(localStorage.getItem("readList")) || [];
+    readList.push(book);
+    localStorage.setItem("readList", JSON.stringify(readList));
+    navigate("/readList");
+  };
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
@@ -79,7 +91,14 @@ export const Review = () => {
           marginTop: 7,
         }}
       >
-        <Card sx={{ maxWidth: "500 !important", margin: "auto", marginTop: 0 }}>
+        <Card
+          sx={{
+            maxWidth: "500 !important",
+            margin: "auto",
+            marginTop: 0,
+            position: "relative",
+          }}
+        >
           {book.volumeInfo.imageLinks &&
           book.volumeInfo.imageLinks.thumbnail ? (
             <CardMedia
@@ -110,7 +129,26 @@ export const Review = () => {
               {book.volumeInfo.publisher} - {book.volumeInfo.publishedDate}
             </Typography>
           </CardContent>
+
+          <IconButton
+            size="medium"
+            sx={{
+              color: "black",
+              margin: "0 8px",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+              position: "absolute",
+              bottom: "8px",
+              right: "8px",
+            }}
+            onClick={() => handleReadClick(book)}
+          >
+            <FavoriteIcon />
+          </IconButton>
+          <br></br>
         </Card>
+
         {reviews.length > 0 && (
           <List>
             {reviews.map((review, index) => (

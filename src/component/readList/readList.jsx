@@ -37,7 +37,10 @@ export const ReadList = () => {
   const { readListState, readListDispatch } = useContext(ReadListContext);
   const [readList, setReadList] = useState([]);
   const username = localStorage.getItem("username");
-  const [isGridView, setIsGridView] = useState(false);
+  const [isGridView, setIsGridView] = useState(
+    JSON.parse(localStorage.getItem("isGridView")) || false
+  );
+
   const [isListToggleOn, setIsListToggleOn] = useState(false);
   const [isGridToggleOn, setIsGridToggleOn] = useState(false);
   const navigate = useNavigate();
@@ -65,6 +68,15 @@ export const ReadList = () => {
     };
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("isListToggleOn", isListToggleOn.toString());
+    localStorage.setItem("isGridToggleOn", isGridToggleOn.toString());
+  }, [isListToggleOn, isGridToggleOn]);
+
+  useEffect(() => {
+    localStorage.setItem("isGridView", JSON.stringify(isGridView));
+  }, [isGridView]);
+
   const deleteReadList = (id) => {
     const updatedReadList = readList.filter((book) => book.id !== id);
     localStorage.setItem("readList", JSON.stringify(updatedReadList));
@@ -78,16 +90,20 @@ export const ReadList = () => {
       }
       return book;
     });
+
+    if (isGridView) {
+      setIsListToggleOn(true);
+      setIsGridToggleOn(false);
+    } else {
+      setIsListToggleOn(false);
+      setIsGridToggleOn(true);
+    }
+
     localStorage.setItem("readList", JSON.stringify(updatedReadList));
     setReadList(updatedReadList);
 
-    if (isGridView) {
-      localStorage.setItem("isListToggleOn", "false");
-      localStorage.setItem("isGridToggleOn", "true");
-    } else {
-      localStorage.setItem("isListToggleOn", "true");
-      localStorage.setItem("isGridToggleOn", "false");
-    }
+    localStorage.setItem("isListToggleOn", isListToggleOn.toString());
+    localStorage.setItem("isGridToggleOn", isGridToggleOn.toString());
   };
 
   const handleReviewClick = (book) => {
@@ -163,6 +179,7 @@ export const ReadList = () => {
                   setIsGridView(false);
                   setIsListToggleOn(true);
                   setIsGridToggleOn(false);
+                  localStorage.setItem("isGridView", "false");
                 }}
                 style={{
                   color: "black",
@@ -175,6 +192,7 @@ export const ReadList = () => {
               >
                 <FormatListBulletedIcon style={{ fontSize: "40px" }} />
               </IconButton>
+
               <span
                 style={{
                   position: "absolute",
@@ -188,12 +206,14 @@ export const ReadList = () => {
                   content: '""',
                 }}
               />
+
               <IconButton
                 color={isGridView ? "primary" : "default"}
                 onClick={() => {
                   setIsGridView(true);
                   setIsListToggleOn(false);
                   setIsGridToggleOn(true);
+                  localStorage.setItem("isGridView", "true");
                 }}
                 style={{
                   color: "black",
